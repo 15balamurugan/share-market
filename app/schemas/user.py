@@ -1,15 +1,15 @@
 from datetime import datetime
 import re
 from typing import Optional
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator,EmailStr
 from bson import ObjectId
 
 
-class UserCreate(BaseModel):
+class User(BaseModel):
     username: str
     firstname: str
     lastname: str
-    email: str
+    email: EmailStr
     mobile_no: Optional[str] = None
     password: str
 
@@ -19,7 +19,7 @@ class UserInDB(BaseModel):
     username: str
     firstname: str
     lastname: str
-    email: str
+    email: EmailStr
     mobile_no: Optional[str] = None
     hashed_password: str
     created_at: datetime

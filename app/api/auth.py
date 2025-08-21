@@ -8,8 +8,9 @@ from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from database.collections import users_collection
-from schemas.user import UserCreate, UserInDB
+from schemas.user import User, UserInDB,EmailStr
 from config import settings
+
 router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
@@ -84,8 +85,7 @@ async def signup_page(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request})
 
 @router.post("/signup")
-async def signup(user: UserCreate):
-    # check for duplicates by email OR username
+async def signup(user: User):
     existing_user = await users_collection.find_one({
         "$or": [
             {"email": user.email},
@@ -103,7 +103,7 @@ async def signup(user: UserCreate):
     created_at = datetime.now().isoformat()
     
     user_data = {
-        "username": user.username,   # ✅ include username
+        "username": user.username,  
         "firstname": user.firstname,
         "lastname": user.lastname,
         "email": user.email,
@@ -117,7 +117,6 @@ async def signup(user: UserCreate):
 
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Accept username OR email for login
     user = await users_collection.find_one({
         "$or": [
             {"email": form_data.username},
@@ -147,7 +146,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         "access_token": access_token,
         "token_type": "bearer",
         "user": {
-            "username": user["username"],   # ✅ return username
+            "username": user["username"],   
             "email": user["email"],
         }
     }
@@ -155,7 +154,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 @router.get("/user/profile")
 async def get_user_profile(current_user: UserInDB = Depends(get_current_user)):
     return {
-        "username": current_user.username,   # ✅ include username
+        "username": current_user.username,   
         "firstname": current_user.firstname,
         "lastname": current_user.lastname,
         "email": current_user.email,
@@ -163,26 +162,48 @@ async def get_user_profile(current_user: UserInDB = Depends(get_current_user)):
         "created_at": current_user.created_at
     }
 
-from pydantic import BaseModel
 
-class ForgotPasswordRequest(BaseModel):
-    email: str
 
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+# ---------- Schemas ----------
+class ForgotPasswordRequest(UserInDB):
+    email: EmailStr
+
+class ResetPasswordRequest(UserInDB):
+    token: str
+    new_password: str
+    confirm_password: str
+
+
+# ---------- Routes ----------
 @router.post("/forgot-password")
 async def forgot_password(req: ForgotPasswordRequest):
     user = await users_collection.find_one({"email": req.email})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # generate token and send email (as before)
-    return {"message": "Password reset link sent"}
+    # Generate reset token
+    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    payload = {"sub": req.email, "exp": expire}
+    reset_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
-from pydantic import BaseModel
+    # Store token and expiry in DB
+    await users_collection.update_one(
+        {"email": req.email},
+        {"$set": {"reset_token": reset_token, "reset_token_expiry": expire}}
+    )
 
-class ResetPasswordRequest(BaseModel):
-    token: str
-    new_password: str
-    confirm_password: str
+    reset_link = f"http://localhost:8000/reset-password?token={reset_token}"
+
+    # TODO: Send reset_link by email
+    # Example: send_email(req.email, "Password Reset", f"Click here: {reset_link}")
+
+    return {"message": "Password reset link sent", "reset_link": reset_link}  # (remove reset_link in production)
+
 
 @router.post("/reset-password")
 async def reset_password(req: ResetPasswordRequest):
@@ -195,7 +216,13 @@ async def reset_password(req: ResetPasswordRequest):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
+    user = await users_collection.find_one({"email": email})
+    if not user or user.get("reset_token") != req.token:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
     hashed_password = get_password_hash(req.new_password)
+
+    # Update password and clear reset token
     await users_collection.update_one(
         {"email": email},
         {"$set": {"hashed_password": hashed_password}, "$unset": {"reset_token": "", "reset_token_expiry": ""}}
