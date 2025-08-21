@@ -11,7 +11,7 @@ class NotificationType(str, Enum):
     order_update = "Order Update"
 
 
-class NotificationCreate(BaseModel):
+class Notification(BaseModel):
     user_id: str                  # FK → User._id
     message: str
     type: NotificationType         # Enum for category

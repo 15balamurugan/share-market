@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from bson import ObjectId
 
 
-class MarketDataCreate(BaseModel):
+class MarketData(BaseModel):
     symbol: str
     price: float
     broker_source: str
@@ -16,7 +16,6 @@ class MarketDataInDB(BaseModel):
     timestamp: datetime
     broker_source: str
 
-    # Convert ObjectId → str
     @classmethod
     def __get_validators__(cls):
         yield cls.validate_objectid

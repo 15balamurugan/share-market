@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from bson import ObjectId
 
 
-class BrokerAccountCreate(BaseModel):
+class BrokerAccount(BaseModel):
     user_id: str                # FK → User._id
     broker_name: str
     api_key: str

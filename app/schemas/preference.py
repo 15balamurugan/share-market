@@ -8,7 +8,7 @@ class RiskLevel(str, Enum):
     medium = "Medium"
     high = "High"
 
-class PreferenceCreate(BaseModel):
+class Preference(BaseModel):
     user_id: str                # FK → User._id
     preferred_broker: str
     notifications: bool = True   # default enabled
@@ -22,7 +22,6 @@ class PreferenceInDB(BaseModel):
     notifications: bool
     risk_level: str
 
-    # Convert ObjectId → str
     @classmethod
     def __get_validators__(cls):
         yield cls.validate_objectid

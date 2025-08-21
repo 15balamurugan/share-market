@@ -10,7 +10,7 @@ class SignalType(str, Enum):
     hold = "Hold"
 
 
-class TradeSignalCreate(BaseModel):
+class TradeSignal(BaseModel):
     user_id: str                 # FK → User._id
     symbol: str
     signal_type: SignalType      # Enum instead of free text
