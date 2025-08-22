@@ -1,8 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Dashboard from "./pages/dash/dashboard";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import ForgotPassword from "./pages/auth/forgotPassword";
 
 function PrivateRoute({ children }) {
   const { auth } = useAuth();
@@ -16,18 +25,18 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route
             path="/"
             element={
               <PrivateRoute>
-                <h1 className="text-3xl text-center mt-20">
-                  Welcome Dashboard 🚀
-                </h1>
+                <Dashboard />
               </PrivateRoute>
             }
           />
         </Routes>
       </Router>
+      <ToastContainer />
     </AuthProvider>
   );
 }
