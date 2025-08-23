@@ -41,7 +41,7 @@ export default function SideNavbar({ onSelect }) {
   return (
     <div
       className={`flex flex-col bg-gray-900 text-white p-5 transition-all duration-300 ${
-        isOpen ? "w-64" : "w-16"
+        isOpen ? "w-64" : "w-20"
       }`}
     >
       {/* Toggle Button */}
@@ -58,18 +58,16 @@ export default function SideNavbar({ onSelect }) {
       )}
 
       {/* Menu */}
-      <nav className="flex-1">
+      <nav className="flex-1 space-y-2">
         {menuItems.map((item) => (
           <button
             key={item.name}
-            onClick={() => {
-              if (item.name === "Logout") {
-                handlelogout(); // only call logout here
-              } else {
-                handleClick(item.name); // normal menu click
-              }
-            }}
-            className={`flex items-center gap-3 w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
+            onClick={() =>
+              item.name === "Logout" ? handlelogout() : handleClick(item.name)
+            }
+            className={`flex items-center ${
+              isOpen ? "gap-3 px-4" : "justify-center"
+            } w-full py-2 rounded-lg transition-colors ${
               active === item.name
                 ? "bg-blue-600 text-white"
                 : "text-gray-300 hover:bg-gray-700 hover:text-white"
