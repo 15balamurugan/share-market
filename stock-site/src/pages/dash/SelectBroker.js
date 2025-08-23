@@ -19,8 +19,8 @@ export default function BrokerAccountForm() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full ">
+    <div className="flex justify-center items-center bg-gradient-to-br from-gray-900 h-120 via-gray-800 to-black bg-gray-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md ">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Connect Broker Account
         </h2>

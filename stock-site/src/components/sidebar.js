@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { SiIobroker } from "react-icons/si";
 
 export default function SideNavbar({ onSelect }) {
   const [active, setActive] = useState("Home");
@@ -22,7 +23,7 @@ export default function SideNavbar({ onSelect }) {
     { name: "Intraday", icon: <FaChartLine /> },
     { name: "Swing", icon: <FaExchangeAlt /> },
     { name: "Longterm", icon: <FaClock /> },
-    { name: "Broker Account", icon: <FaUser /> },
+    { name: "Broker Account", icon: <SiIobroker /> },
     { name: "Profile", icon: <FaUser /> },
     { name: "Logout", icon: <FaSignOutAlt /> },
   ];

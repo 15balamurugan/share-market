@@ -23,13 +23,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      console.log("🔑 Access Token:", data.access_token);
-      console.log("token-type", data.token_type);
-
+      // console.log("🔑 Access Token:", data.access_token);
+      const token = data.access_token;
+      localStorage.setItem("token", token);
+      // console.log("token-type", data.token_type);
       if (response.ok) {
         setUser(data.user);
         console.log("success");
-
         setAuth(true);
         localStorage.setItem("user", JSON.stringify(data.user));
         return { success: true };
