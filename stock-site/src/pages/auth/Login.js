@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { TrendingUp, Mail, Lock } from "lucide-react";
 import { toast } from "react-toastify";
+import logo from "../../asset/vrlogo.png";
 
 export default function Login() {
   const { login } = useAuth();
@@ -26,12 +27,16 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <div className="flex flex-col md:flex-row bg-white shadow-2xl rounded-2xl overflow-hidden w-[900px]">
         {/* Left section with stock vibes */}
-        <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 to-green-500 w-1/2 p-10 text-white">
-          <TrendingUp size={80} className="mb-6" />
-          <h1 className="text-3xl font-bold mb-2">Stock Market Pro</h1>
+        <div
+          className="flex flex-col  justify-center items-center bg-gradient-to-br from-blue-600 to-green-500 w-1/2 p-10 text-white bg-center bg-no-repeat bg-contain shadow-lg"
+          style={{ backgroundImage: `url(${logo})` }}
+        >
+          {/* <TrendingUp size={80} className="mb-6" /> */}
+
+          {/* <h1 className="text-3xl font-bold mb-2">Stock Market Pro</h1>
           <p className="text-lg text-center opacity-90">
             Track. Trade. Grow. Login to your dashboard to start investing 🚀
-          </p>
+          </p> */}
         </div>
 
         {/* Right section - login form */}

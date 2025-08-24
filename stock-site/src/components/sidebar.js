@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { SiIobroker } from "react-icons/si";
+import logo from "../asset/vrlogo.png";
 
 export default function SideNavbar({ onSelect }) {
   const [active, setActive] = useState("Home");
@@ -35,6 +36,7 @@ export default function SideNavbar({ onSelect }) {
 
   const handlelogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setAuth(false);
     navigate("/login");
   };
@@ -52,7 +54,10 @@ export default function SideNavbar({ onSelect }) {
       >
         <FaBars />
       </button>
-
+      <div
+        className="absolute inset-0 opacity-0 bg-center bg-no-repeat bg-contain"
+        style={{ backgroundImage: `url(${logo})` }}
+      ></div>
       {/* Title */}
       {isOpen && (
         <h1 className="text-2xl font-bold mb-10 text-center">Dashboard</h1>

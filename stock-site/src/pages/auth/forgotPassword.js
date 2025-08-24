@@ -92,7 +92,7 @@ export default function ForgotPassword() {
         <p className="text-sm text-center mt-6 text-gray-300">
           Remembered your password?{" "}
           <Link
-            to="/auth/login"
+            to="/login"
             className="text-green-400 hover:underline font-medium"
           >
             Sign In
