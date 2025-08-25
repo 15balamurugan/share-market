@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { TrendingUp, Mail, Lock } from "lucide-react";
 import { toast } from "react-toastify";
 import logo from "../../asset/vrlogo.png";
+import { Zap } from "lucide-react";
 
 export default function Login() {
   const { login } = useAuth();
@@ -15,7 +16,12 @@ export default function Login() {
     e.preventDefault();
     const res = await login(form.username, form.password);
     if (res.success) {
-      toast.success("✅ Login successful!, Welcome to VR68");
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Zap className="w-5 h-5 text-yellow-400" />
+          <span>Welcome to VR68 Trading</span>
+        </div>
+      );
       navigate("/");
     } else {
       toast.error(res.message || "❌ Login failed");

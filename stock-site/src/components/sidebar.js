@@ -54,10 +54,10 @@ export default function SideNavbar({ onSelect }) {
       >
         <FaBars />
       </button>
-      <div
+      {/* <div
         className="absolute inset-0 opacity-0 bg-center bg-no-repeat bg-contain"
         style={{ backgroundImage: `url(${logo})` }}
-      ></div>
+      ></div> */}
       {/* Title */}
       {isOpen && (
         <h1 className="text-2xl font-bold mb-10 text-center">Dashboard</h1>

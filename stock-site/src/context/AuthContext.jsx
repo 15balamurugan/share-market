@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await fetch(`${BASE_URL}login`, {
-        method: "POST", // Use POST instead of GET
+        method: "POST", 
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
