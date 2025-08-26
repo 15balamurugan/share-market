@@ -19,7 +19,7 @@ export default function Login() {
       toast.success(
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-yellow-400" />
-          <span>Welcome to VR68 Trading</span>
+          <span>Welcome to VR ALGO Trading</span>
         </div>
       );
       navigate("/");

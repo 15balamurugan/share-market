@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { User, Mail, Phone, Calendar, Badge } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
+  const { setUsername } = useAuth();
 
   useEffect(() => {
     fetch("http://192.168.1.58:8000/user/profile", {
