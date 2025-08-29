@@ -15,6 +15,8 @@ export const stockAPI = {
       const response = await api.get(`/api/stock/${symbol}`, {
         params: { period, interval },
       });
+      console.log('response', response);
+      
       return response.data;
     } catch (error) {
       console.error("Error fetching stock:", error);

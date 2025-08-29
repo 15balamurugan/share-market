@@ -9,6 +9,8 @@ import Navbar from "../../components/navbar";
 export default function Dashboard() {
   const [active, setActive] = useState("Home");
 
+  
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       {/* 🔹 Top Navbar */}

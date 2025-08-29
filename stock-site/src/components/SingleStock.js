@@ -10,7 +10,6 @@ const SingleStock = ({ period, interval }) => {
 
   const analyzeStock = async () => {
     if (!symbol) return;
-
     setLoading(true);
     setError(null);
 
@@ -85,10 +84,10 @@ const SingleStock = ({ period, interval }) => {
 
             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
               <h3 className="text-sm font-medium text-gray-500">High</h3>
-              <p className="text-xl font-bold">
+              {/* <p className="text-xl font-bold">
                 {stockData.currency === "INR" ? "₹" : "$"}
                 {stockData.high.toFixed(2)}
-              </p>
+              </p> */}
             </div>
 
             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">

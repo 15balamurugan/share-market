@@ -1,5 +1,5 @@
-import React from 'react';
-import Plot from 'react-plotly.js';
+import React from "react";
+import Plot from "react-plotly.js";
 
 const CandlestickChart = ({ data, symbol }) => {
   if (!data || data.length === 0) {
@@ -11,12 +11,12 @@ const CandlestickChart = ({ data, symbol }) => {
   }
 
   // Prepare data for Plotly
-  const dates = data.map(item => new Date(item.date));
-  const opens = data.map(item => item.open);
-  const highs = data.map(item => item.high);
-  const lows = data.map(item => item.low);
-  const closes = data.map(item => item.close);
-  const volumes = data.map(item => item.volume);
+  const dates = data.map((item) => new Date(item.date));
+  const opens = data.map((item) => item.open);
+  const highs = data.map((item) => item.high);
+  const lows = data.map((item) => item.low);
+  const closes = data.map((item) => item.close);
+  const volumes = data.map((item) => item.volume);
 
   // Create candlestick trace
   const candlestickTrace = {
@@ -25,26 +25,26 @@ const CandlestickChart = ({ data, symbol }) => {
     high: highs,
     low: lows,
     close: closes,
-    type: 'candlestick',
-    name: 'Price',
-    increasing: { line: { color: '#2ecc71' } },
-    decreasing: { line: { color: '#e74c3c' } },
-    yaxis: 'y1'
+    type: "candlestick",
+    name: "Price",
+    increasing: { line: { color: "#2ecc71" } },
+    decreasing: { line: { color: "#e74c3c" } },
+    yaxis: "y1",
   };
 
   // Create volume trace
-  const colors = closes.map((close, i) => 
-    close >= opens[i] ? '#2ecc71' : '#e74c3c'
+  const colors = closes.map((close, i) =>
+    close >= opens[i] ? "#2ecc71" : "#e74c3c"
   );
 
   const volumeTrace = {
     x: dates,
     y: volumes,
-    type: 'bar',
-    name: 'Volume',
+    type: "bar",
+    name: "Volume",
     marker: { color: colors },
     opacity: 0.7,
-    yaxis: 'y2'
+    yaxis: "y2",
   };
 
   const layout = {
@@ -75,21 +75,25 @@ const CandlestickChart = ({ data, symbol }) => {
     responsive: true,
     displayModeBar: true,
     displaylogo: false,
-    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+    modeBarButtonsToRemove: ["pan2d", "lasso2d", "select2d"],
     modeBarButtonsToAdd: [
-      'drawline', 'drawopenpath', 'drawclosedpath',
-      'drawcircle', 'drawrect', 'eraseshape'
-    ]
+      "drawline",
+      "drawopenpath",
+      "drawclosedpath",
+      "drawcircle",
+      "drawrect",
+      "eraseshape",
+    ],
   };
 
   return (
-    <div className="w-full h-[600px] bg-white shadow-lg rounded-xl p-4">
+    <div className="w-full border h-[600px] bg-white shadow-lg rounded-xl p-4">
       <Plot
         data={[candlestickTrace, volumeTrace]}
         layout={layout}
         config={config}
         useResizeHandler={true}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: "100%", height: "100%" }}
       />
     </div>
   );

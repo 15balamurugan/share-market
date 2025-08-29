@@ -75,7 +75,7 @@ const BulkViewer = ({ period, interval }) => {
 
   return (
     <div className="p-6 bg-white shadow-md rounded-xl">
-      <h2 className="text-2xl font-bold mb-4">📊 Bulk Stock Viewer - Top Stocks</h2>
+      {/* <h2 className="text-2xl font-bold mb-4">📊 Bulk Stock Viewer - Top Stocks</h2> */}
       
       <div className="flex items-center gap-4 mb-6">
         <label className="font-medium">Select Category:</label>

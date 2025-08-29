@@ -32,6 +32,7 @@ function App() {
   const refreshData = () => {
     setLastUpdated(new Date());
   };
+  
 
   const renderView = () => {
     switch (currentView) {
@@ -51,7 +52,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       <Header />
-      <div className="bg-white flex border shadow-md">
+      <div className="bg-white flex shadow-md">
         <Navigation
           currentView={currentView}
           setCurrentView={setCurrentView}

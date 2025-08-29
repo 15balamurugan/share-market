@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function TopNavbar() {
   const [open, setOpen] = useState(false);
+  const { setAuth } = useAuth();
   const user = JSON.parse(localStorage.getItem("user")) || {
     name: "Guest",
     email: "guest@example.com",
@@ -41,7 +42,11 @@ export default function TopNavbar() {
       </h2>
 
       {/* Right User Section  */}
-      <div className="relative" ref={dropdownRef}>
+      <div className="relative flex items-center gap-2" ref={dropdownRef}>
+        <p className="text-green-700 font-bold">
+          👋 Welcome -{" "}
+          <span className="text-black font-bold text-lg">{user.username}</span>
+        </p>
         <img
           src={userAvatar}
           alt="User"
@@ -51,14 +56,15 @@ export default function TopNavbar() {
 
         {/* Dropdown / Small Modal */}
         {open && (
-          <div className="absolute right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg p-4 z-50">
+          <div className="absolute right-0 mt-50 w-56 bg-white border rounded-lg shadow-lg p-4 z-50">
             <p className="font-sm text-gray-800">{user.username}</p>
             <p className="text-sm text-gray-600">{user.email}</p>
             <div className="border-t my-2"></div>
             <button
-              className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 text-sm"
+              className="w-full text-left px-3 py-2 rounded-md text-black hover:bg-red-500 hover:text-white text-sm"
               onClick={() => {
                 localStorage.removeItem("user");
+                setAuth(false)
                 window.location.reload();
               }}
             >
