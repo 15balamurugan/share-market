@@ -15,14 +15,11 @@ templates = Jinja2Templates(directory="templates")
 
 app.include_router(api_router)
 
-origins = [
-    "http://localhost:3000",
-    "http://192.168.1.25:3000",  # your React dev server
-]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -13,4 +13,3 @@ markets_collection = db[settings.MARKETS_COLLECTION]
 notifications_collection = db[settings.NOTIFICATIONS_COLLECTION]
 preferences_collection = db[settings.PREFERENCES_COLLECTION]
 trades_collection = db[settings.TRADES_COLLECTION]
-
