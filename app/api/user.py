@@ -62,6 +62,14 @@ async def get_user_by_email(email: str) -> Optional[UserInDB]:
         return UserInDB(**user)
     return None
 
+@router.get("/users/login")
+async def get_user_by_email(email: str) -> Optional[UserInDB]:
+    user = await users_collection.find_one({"email": email})
+    if user:
+        user["_id"] = str(user["_id"])
+        return UserInDB(**user)
+    return None
+
 async def authenticate_user(email: str, password: str):
     user = await get_user_by_email(email)
     if not user:
@@ -101,6 +109,7 @@ async def signup(user: User):
     
     hashed_password = get_password_hash(user.password)
     created_at = datetime.now().isoformat()
+    updated_at = datetime.now().isoformat()
     
     user_data = {
         "username": user.username,  
@@ -109,7 +118,8 @@ async def signup(user: User):
         "email": user.email,
         "mobile_no": user.mobile_no,
         "hashed_password": hashed_password,
-        "created_at": created_at
+        "created_at": created_at,
+        "updated_at": updated_at
     }
     
     result = await users_collection.insert_one(user_data)
@@ -165,67 +175,68 @@ async def get_user_profile(current_user: UserInDB = Depends(get_current_user)):
 
 
 
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+# def get_password_hash(password: str) -> str:
+#     return pwd_context.hash(password)
 
 
-# ---------- Schemas ----------
-class ForgotPasswordRequest(UserInDB):
-    email: EmailStr
+# # ---------- Schemas ----------
+# class ForgotPasswordRequest(User):
+#     email: EmailStr
 
-class ResetPasswordRequest(UserInDB):
-    token: str
-    new_password: str
-    confirm_password: str
-
-
-# ---------- Routes ----------
-@router.post("/forgot-password")
-async def forgot_password(req: ForgotPasswordRequest):
-    user = await users_collection.find_one({"email": req.email})
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # Generate reset token
-    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {"sub": req.email, "exp": expire}
-    reset_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-
-    # Store token and expiry in DB
-    await users_collection.update_one(
-        {"email": req.email},
-        {"$set": {"reset_token": reset_token, "reset_token_expiry": expire}}
-    )
-
-    reset_link = f"http://localhost:8000/reset-password?token={reset_token}"
-
-    # TODO: Send reset_link by email
-    # Example: send_email(req.email, "Password Reset", f"Click here: {reset_link}")
-
-    return {"message": "Password reset link sent", "reset_link": reset_link}  # (remove reset_link in production)
+# class ResetPasswordRequest(User):
+#     token: str
+#     new_password: str
+#     confirm_password: str
 
 
-@router.post("/reset-password")
-async def reset_password(req: ResetPasswordRequest):
-    if req.new_password != req.confirm_password:
-        raise HTTPException(status_code=400, detail="Passwords do not match")
+# # ---------- Routes ----------
+# @router.post("/forgot-password")
+# async def forgot_password(req: ForgotPasswordRequest):
+#     user = await users_collection.find_one({"email": req.email})
+#     if not user:
+#         raise HTTPException(status_code=404, detail="User not found")
 
-    try:
-        payload = jwt.decode(req.token, SECRET_KEY, algorithms=[ALGORITHM])
-        email = payload.get("sub")
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+#     # Generate reset token
+#     expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+#     payload = {"sub": req.email, "exp": expire}
+#     reset_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
-    user = await users_collection.find_one({"email": email})
-    if not user or user.get("reset_token") != req.token:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+#     # Store token and expiry in DB
+#     await users_collection.update_one(
+#         {"email": req.email},
+#         {"$set": {"reset_token": reset_token, "reset_token_expiry": expire}}
+#     )
 
-    hashed_password = get_password_hash(req.new_password)
+#     reset_link = f"http://localhost:8000/reset-password?token={reset_token}"
 
-    # Update password and clear reset token
-    await users_collection.update_one(
-        {"email": email},
-        {"$set": {"hashed_password": hashed_password}, "$unset": {"reset_token": "", "reset_token_expiry": ""}}
-    )
+#     # TODO: Send reset_link by email
+#     # Example: send_email(req.email, "Password Reset", f"Click here: {reset_link}")
 
-    return {"message": "Password reset successful"}
+#     return {"message": "Password reset link sent", "reset_link": reset_link}  # (remove reset_link in production)
+
+
+# @router.post("/reset-password")
+# async def reset_password(req: ResetPasswordRequest):
+#     if req.new_password != req.confirm_password:
+#         raise HTTPException(status_code=400, detail="Passwords do not match")
+
+#     try:
+#         payload = jwt.decode(req.token, SECRET_KEY, algorithms=[ALGORITHM])
+#         email = payload.get("sub")
+#     except JWTError:
+#         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+#     user = await users_collection.find_one({"email": email})
+#     if not user or user.get("reset_token") != req.token:
+#         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+#     hashed_password = get_password_hash(req.new_password)
+
+#     # Update password and clear reset token
+#     await users_collection.update_one(
+#         {"email": email},
+#         {"$set": {"hashed_password": hashed_password}, "$unset": {"reset_token": "", "reset_token_expiry": ""}}
+#     )
+
+#     return {"message": "Password reset successful"}
+

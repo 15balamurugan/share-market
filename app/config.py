@@ -17,7 +17,18 @@ class Settings(BaseSettings):
     MARKETS_COLLECTION: str ="markets"
     PREFERENCES_COLLECTION: str = "preferences"
     
+    # Email settings
+    MAIL_USERNAME: str = "reshmamanikandan1512@gmail.com"
+    MAIL_PASSWORD: str = "irxdlyucgsrdjqiw"   # use Gmail App Password
+    MAIL_FROM: str = "reshmamanikandan1512@gmail.com"
+    MAIL_PORT: int = 587
+    MAIL_SERVER: str = "smtp.gmail.com"
+    MAIL_STARTTLS : bool=True   # enable STARTTLS
+    MAIL_SSL_TLS : bool =False  # SSL/TLS mode
+    USE_CREDENTIALS : bool =True
+    VALIDATE_CERTS : bool =True
+
     class Config:
         env_file = ".env"
-
+     
 settings = Settings()
