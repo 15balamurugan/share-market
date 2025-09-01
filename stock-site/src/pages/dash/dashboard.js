@@ -1,16 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import SideNavbar from "../../components/sidebar";
-import Intraday from "./intraday";
-import SelectBroker from "./SelectBroker";
-import ProfilePage from "./profile";
-import HomeCarousel from "./home";
 import Navbar from "../../components/navbar";
+import { Outlet } from "react-router-dom";
 
 export default function Dashboard() {
-  const [active, setActive] = useState("Home");
-
-  
-
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       {/* 🔹 Top Navbar */}
@@ -18,23 +11,11 @@ export default function Dashboard() {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <SideNavbar onSelect={(name) => setActive(name)} />
+        <SideNavbar />
 
         {/* Main Content */}
         <div className="flex-1 p-10 relative">
-          <h2 className="text-3xl font-semibold text-white mb-5 relative z-10">
-            {active}
-          </h2>
-
-          <div className="bg-white border shadow rounded-lg p-6 min-h-[600px] relative z-10">
-            {active === "Home" && <HomeCarousel />}
-            {active === "Intraday" && <Intraday />}
-            {active === "Swing" && <p>Swing trading strategies...</p>}
-            {active === "Longterm" && <p>Long-term investment plans...</p>}
-            {active === "Broker Account" && <SelectBroker />}
-            {active === "Profile" && <ProfilePage />}
-            {active === "Logout" && <p>You have been logged out.</p>}
-          </div>
+          <Outlet /> {/* 🔹 Nested routes like /home, /intraday, etc. */}
         </div>
       </div>
     </div>

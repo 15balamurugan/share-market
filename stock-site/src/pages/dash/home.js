@@ -4,66 +4,125 @@ import img2 from "../../asset/carousal-2.jpg";
 import img3 from "../../asset/carousal-3.jpg";
 import img4 from "../../asset/carousal-4.jpg";
 
-const images = [img1, img2, img3, img4];
+const images = [
+  { src: img1, title: "Immersive Trading Experience", description: "Step into the future of algorithmic trading with our VR platform" },
+  { src: img2, title: "Real-time Market Analytics", description: "Visualize market trends and patterns in immersive 3D environments" },
+  { src: img3, title: "Advanced Algorithm Builder", description: "Create and test trading algorithms in virtual reality" },
+  { src: img4, title: "Multi-device Compatibility", description: "Trade seamlessly across VR, desktop, and mobile platforms" }
+];
 
 export default function HomeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Auto slide every 3 seconds
+  // Auto slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000); // 3 sec
+      if (!isTransitioning) {
+        handleNext();
+      }
+    }, 5000);
 
-    return () => clearInterval(interval); // cleanup
-  }, []);
+    return () => clearInterval(interval);
+  }, [isTransitioning]);
 
-  const prevSlide = () => {
+  const handlePrev = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setTimeout(() => setIsTransitioning(false), 700);
   };
 
-  const nextSlide = () => {
+  const handleNext = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setTimeout(() => setIsTransitioning(false), 700);
+  };
+
+  const goToSlide = (index) => {
+    if (isTransitioning || index === currentIndex) return;
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   return (
-    <div className="relative w-full min-h-[500px] max-w-6xl mx-auto mt-10">
-      {/* Carousel Image */}
-      <div className="overflow-hidden rounded-2xl shadow-lg">
-        <img
-          src={images[currentIndex]}
-          alt="carousel"
-          className="w-full h-[500px] object-cover transition-all duration-700"
-        />
-      </div>
-
-      {/* Left Arrow */}
-      <button
-        onClick={prevSlide}
-        className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black transition"
-      >
-        ❮
-      </button>
-
-      {/* Right Arrow */}
-      <button
-        onClick={nextSlide}
-        className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black transition"
-      >
-        ❯
-      </button>
-
-      {/* Dots Indicator */}
-      <div className="flex justify-center mt-4 space-x-2">
-        {images.map((_, index) => (
-          <button
+    <div className="relative w-full max-w-6xl mx-auto mt-10 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-900 to-blue-900">
+      {/* Carousel Container */}
+      <div className="relative h-[500px] overflow-hidden">
+        {/* Slide with content */}
+        {images.map((image, index) => (
+          <div
             key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full ${
-              currentIndex === index ? "bg-blue-600" : "bg-gray-400"
+            className={`absolute inset-0 transition-all duration-700 ${
+              index === currentIndex
+                ? "opacity-100 translate-x-0"
+                : index < currentIndex
+                ? "-translate-x-full opacity-0"
+                : "translate-x-full opacity-0"
             }`}
-          ></button>
+          >
+            <img
+              src={image.src}
+              alt={image.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-purple-900/50"></div>
+            
+            {/* Text content */}
+            <div className={`absolute bottom-20 left-10 text-white transition-all duration-1000 delay-300 ${
+              index === currentIndex ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}>
+              <h2 className="text-4xl font-bold mb-2">{image.title}</h2>
+              <p className="text-xl max-w-md">{image.description}</p>
+            </div>
+          </div>
         ))}
+
+        {/* Left Arrow */}
+        <button
+          onClick={handlePrev}
+          className="absolute top-1/2 left-4 -translate-y-1/2 bg-blue-800/70 hover:bg-blue-700 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm hover:scale-110"
+          aria-label="Previous slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {/* Right Arrow */}
+        <button
+          onClick={handleNext}
+          className="absolute top-1/2 right-4 -translate-y-1/2 bg-blue-800/70 hover:bg-blue-700 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm hover:scale-110"
+          aria-label="Next slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Dots Indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentIndex === index 
+                  ? "bg-blue-400 scale-125" 
+                  : "bg-white/50 hover:bg-white/80"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            ></button>
+          ))}
+        </div>
+
+        {/* Slide counter */}
+        <div className="absolute top-4 right-4 bg-black/40 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+          {currentIndex + 1} / {images.length}
+        </div>
       </div>
     </div>
   );

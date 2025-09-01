@@ -91,7 +91,7 @@ const SearchQueue = ({ period, interval }) => {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for stocks..."
             onKeyPress={(e) => e.key === "Enter" && searchStocks()}
-            className="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-300"
+            className="flex-1 px-4 py-2 border text-black rounded-lg shadow-sm focus:ring focus:ring-blue-300"
           />
           <button
             onClick={searchStocks}

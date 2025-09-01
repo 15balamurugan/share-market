@@ -1,25 +1,74 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function BrokerAccountForm() {
   const [formData, setFormData] = useState({
-    broker: "",
-    apiKey: "",
-    apiSecret: "",
+    broker_name: "",
+    api_Key: "",
+    api_Secret: "",
   });
-
+  const [message, setMessage] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Broker Account Form Data:", formData);
-    // call backend API here
+
+    try {
+      // Build payload to match backend field names
+      const payload = {
+        broker_name: formData.broker_name,
+        api_key: formData.api_Key,
+        api_secret: formData.api_Secret,
+      };
+
+      // Retrieve token
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMessage("❌ No authentication token found. Please login first.");
+        return;
+      }
+
+      // API request
+      const response = await axios.post(
+        "http://192.168.1.58:8000/broker/add",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // ✅ Success
+      console.log("Response:", response.data);
+      setMessage("✅ Broker account added successfully");
+    } catch (error) {
+      // ❌ Error handling
+      if (error.response) {
+        // Backend returned an error response
+        console.error("Backend Error:", error.response.data);
+        setMessage(
+          `❌ Failed: ${error.response.data.message || "Server error"}`
+        );
+      } else if (error.request) {
+        // No response received
+        console.error("Network Error:", error.request);
+        setMessage("❌ No response from server. Check network.");
+      } else {
+        // Other errors
+        console.error("Error:", error.message);
+        setMessage(`❌ Error: ${error.message}`);
+      }
+    }
   };
 
   return (
-    <div className="flex justify-center items-center bg-gradient-to-br from-gray-900 h-120 via-gray-800 to-black bg-gray-100">
+    <div className="flex justify-center items-center bg-gradient-to-br from-gray-900 h-120 via-gray-800 to-black bg-green-100">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md ">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Connect Broker Account
@@ -32,8 +81,8 @@ export default function BrokerAccountForm() {
               Select Broker
             </label>
             <select
-              name="broker"
-              value={formData.broker}
+              name="broker_name"
+              value={formData.broker_name}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               required
@@ -43,6 +92,7 @@ export default function BrokerAccountForm() {
               <option value="upstox">Upstox</option>
               <option value="angel">Angel One</option>
               <option value="groww">Groww</option>
+              <option value="ICICI Direct">ICICI Direct</option>
             </select>
           </div>
 
@@ -53,8 +103,8 @@ export default function BrokerAccountForm() {
             </label>
             <input
               type="text"
-              name="apiKey"
-              value={formData.apiKey}
+              name="api_Key"
+              value={formData.api_Key}
               onChange={handleChange}
               placeholder="Enter API Key"
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
@@ -69,8 +119,8 @@ export default function BrokerAccountForm() {
             </label>
             <input
               type="password"
-              name="apiSecret"
-              value={formData.apiSecret}
+              name="api_Secret"
+              value={formData.api_Secret}
               onChange={handleChange}
               placeholder="Enter API Secret Key"
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"

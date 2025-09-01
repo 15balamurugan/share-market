@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const Navigation = ({
   currentView,
@@ -8,17 +8,9 @@ const Navigation = ({
   interval,
   setInterval,
 }) => {
-
-  useEffect(() => {
-    console.log("period", period);
-    console.log("interval", interval);
-  }, [period, interval]);
-
   const viewOptions = [
-    { id: "single", label: "🔍 Single Stock Analysis", icon: "🔍" },
-    // { id: "bulk", label: "📊 Bulk Stock Viewer", icon: "📊" },
-    // { id: "indian", label: "🇮🇳 Indian Stocks", icon: "🇮🇳" },
-    { id: "queue", label: "⚡ Quick Search Queue", icon: "⚡" },
+    { id: "single", label: "Single Analysis", icon: "🔍" },
+    // { id: "queue", label: "Quick Search", icon: "⚡" },
   ];
 
   const periodOptions = [
@@ -31,42 +23,42 @@ const Navigation = ({
   ];
 
   const intervalOptions = [
-    { value: "1m", label: "1 Minute" },
-    { value: "5m", label: "5 Minutes" },
-    { value: "15m", label: "15 Minutes" },
-    { value: "30m", label: "30 Minutes" },
+    { value: "1m", label: "1 Min" },
+    { value: "5m", label: "5 Min" },
+    { value: "15m", label: "15 Min" },
+    { value: "30m", label: "30 Min" },
     { value: "1h", label: "1 Hour" },
     { value: "1d", label: "1 Day" },
   ];
 
   return (
-    <aside className="flex flex-col md:flex-row items-center justify-between bg-white shadow-md rounded-2xl p-4 w-full">
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between bg-gradient-to-r from-gray-800 to-blue-900 shadow-xl rounded-2xl p-4 w-full border border-gray-700">
       {/* Navigation Section */}
-      <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
+      <div className="flex flex-wrap gap-2 mb-4 lg:mb-0">
         {viewOptions.map((option) => (
           <button
             key={option.id}
             onClick={() => setCurrentView(option.id)}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`flex items-center px-4 py-3 rounded-xl transition-all duration-300 ${
               currentView === option.id
-                ? "bg-blue-600 text-white font-semibold shadow-md"
-                : "bg-gray-100 text-gray-800 hover:bg-blue-50 hover:text-blue-600"
+                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
             }`}
           >
-            {/* <span className="mr-1">{option.icon}</span> */}
+            <span className="mr-2 text-lg">{option.icon}</span>
             {option.label}
           </button>
         ))}
       </div>
 
       {/* Time Settings */}
-      <div className="flex  items-center gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Period</label>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-300 mb-1">Period</label>
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
-            className="p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 bg-gray-700 text-white rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
           >
             {periodOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -76,12 +68,12 @@ const Navigation = ({
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Interval</label>
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-300 mb-1">Interval</label>
           <select
             value={interval}
             onChange={(e) => setInterval(e.target.value)}
-            className="p-2  bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 bg-gray-700 text-white rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
           >
             {intervalOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -91,7 +83,7 @@ const Navigation = ({
           </select>
         </div>
       </div>
-    </aside>
+    </div>
   );
 };
 
