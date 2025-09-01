@@ -1,256 +1,3 @@
-// import React, { useState } from "react";
-// import CandlestickChart from "./CandlestickChart";
-// import { stockAPI } from "../services/api";
-
-// const SingleStock = ({ period, interval }) => {
-//   const [symbol, setSymbol] = useState("RELIANCE.NS");
-//   const [stockData, setStockData] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-
-//   const analyzeStock = async () => {
-//     if (!symbol) return;
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       const data = await stockAPI.getStock(symbol, period, interval);
-//       setStockData(data);
-//     } catch (err) {
-//       setError(
-//         "Failed to fetch stock data. Please check the symbol and try again."
-//       );
-//       console.error("Error:", err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 bg-white shadow-lg rounded-xl">
-//       {/* Search Header */}
-//       <div className="mb-6">
-//         <div className="flex gap-3">
-//           <input
-//             type="text"
-//             value={symbol}
-//             onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-//             placeholder="Enter symbol (e.g., RELIANCE.NS, AAPL, BTC-USD)"
-//             className="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-300"
-//           />
-//           <button
-//             onClick={analyzeStock}
-//             disabled={loading}
-//             className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 disabled:opacity-50"
-//           >
-//             {loading ? "Loading..." : "Analyze Stock"}
-//           </button>
-//         </div>
-//       </div>
-
-//       {/* Error Message */}
-//       {error && (
-//         <div className="p-3 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg">
-//           {error}
-//         </div>
-//       )}
-
-//       {/* Stock Data */}
-//       {stockData && (
-//         <>
-//           {/* Metrics */}
-//           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">
-//                 Current Price
-//               </h3>
-//               <p className="text-xl font-bold">
-//                 {stockData.currency === "INR" ? "₹" : "$"}
-//                 {stockData.current_price.toFixed(2)}
-//               </p>
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">Change</h3>
-//               <p
-//                 className={`text-xl font-bold ${
-//                   stockData.change >= 0 ? "text-green-600" : "text-red-600"
-//                 }`}
-//               >
-//                 {stockData.change.toFixed(2)} ({stockData.change_percent.toFixed(2)}
-//                 %)
-//               </p>
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">High</h3>
-//               {/* <p className="text-xl font-bold">
-//                 {stockData.currency === "INR" ? "₹" : "$"}
-//                 {stockData.high.toFixed(2)}
-//               </p> */}
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">Volume</h3>
-//               <p className="text-xl font-bold">
-//                 {stockData.volume.toLocaleString()}
-//               </p>
-//             </div>
-//           </div>
-
-//           {/* Chart */}
-//           <div className="p-4 bg-gray-50 rounded-lg shadow mb-6">
-//             <CandlestickChart data={stockData.history} symbol={symbol} />
-//           </div>
-
-//           {/* Extra Info */}
-//           <div className="p-4 bg-gray-50 rounded-lg shadow space-y-1">
-//             <p>
-//               <strong>Company:</strong> {stockData.name}
-//             </p>
-//             <p>
-//               <strong>Currency:</strong> {stockData.currency}
-//             </p>
-//             <p>
-//               <strong>Last Updated:</strong>{" "}
-//               {new Date(stockData.last_updated).toLocaleString()}
-//             </p>
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default SingleStock;
-
-
-// import React, { useState } from "react";
-// import CandlestickChart from "./CandlestickChart";
-// import { stockAPI } from "../services/api";
-
-// const SingleStock = ({ period, interval }) => {
-//   const [symbol, setSymbol] = useState("RELIANCE.NS");
-//   const [stockData, setStockData] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-
-//   const analyzeStock = async () => {
-//     if (!symbol) return;
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       const data = await stockAPI.getStock(symbol, period, interval);
-//       setStockData(data);
-//     } catch (err) {
-//       setError(
-//         "Failed to fetch stock data. Please check the symbol and try again."
-//       );
-//       console.error("Error:", err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 bg-white shadow-lg rounded-xl">
-//       {/* Search Header */}
-//       <div className="mb-6">
-//         <div className="flex gap-3">
-//           <input
-//             type="text"
-//             value={symbol}
-//             onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-//             placeholder="Enter symbol (e.g., RELIANCE.NS, AAPL, BTC-USD)"
-//             className="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-300"
-//           />
-//           <button
-//             onClick={analyzeStock}
-//             disabled={loading}
-//             className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 disabled:opacity-50"
-//           >
-//             {loading ? "Loading..." : "Analyze Stock"}
-//           </button>
-//         </div>
-//       </div>
-
-//       {/* Error Message */}
-//       {error && (
-//         <div className="p-3 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg">
-//           {error}
-//         </div>
-//       )}
-
-//       {/* Stock Data */}
-//       {stockData && (
-//         <>
-//           {/* Metrics */}
-//           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">
-//                 Current Price
-//               </h3>
-//               <p className="text-xl font-bold">
-//                 {stockData.currency === "INR" ? "₹" : "$"}
-//                 {stockData.current_price.toFixed(2)}
-//               </p>
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">Change</h3>
-//               <p
-//                 className={`text-xl font-bold ${
-//                   stockData.change >= 0 ? "text-green-600" : "text-red-600"
-//                 }`}
-//               >
-//                 {stockData.change.toFixed(2)} ({stockData.change_percent.toFixed(2)}%)
-//               </p>
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">High</h3>
-//               <p className="text-xl font-bold">
-//                 {stockData.currency === "INR" ? "₹" : "$"}
-//                 {stockData.high.toFixed(2)}
-//               </p>
-//             </div>
-
-//             <div className="p-4 bg-gray-50 rounded-lg shadow text-center">
-//               <h3 className="text-sm font-medium text-gray-500">Volume</h3>
-//               <p className="text-xl font-bold">
-//                 {stockData.volume.toLocaleString()}
-//               </p>
-//             </div>
-//           </div>
-
-//           {/* Chart */}
-//           <div className="p-4 bg-gray-50 rounded-lg shadow mb-6">
-//             <CandlestickChart data={stockData.history} symbol={symbol} />
-//           </div>
-
-//           {/* Extra Info */}
-//           <div className="p-4 bg-gray-50 rounded-lg shadow space-y-1">
-//             <p>
-//               <strong>Company:</strong> {stockData.name}
-//             </p>
-//             <p>
-//               <strong>Currency:</strong> {stockData.currency}
-//             </p>
-//             <p>
-//               <strong>Last Updated:</strong>{" "}
-//               {new Date(stockData.last_updated).toLocaleString()}
-//             </p>
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default SingleStock;
-
-
 import React, { useState, useEffect } from "react";
 import CandlestickChart from "./CandlestickChart";
 import { stockAPI } from "../services/api";
@@ -383,7 +130,7 @@ const SingleStock = ({ period, interval }) => {
     if (symbolOrders.length === 0) {
       return (
         <div className="p-4 bg-gray-50 rounded-lg shadow">
-          <h3 className="text-lg font-medium mb-4">My Orders for {symbol}</h3>
+          <h3 className="text-lg font-medium text-black mb-4">My Orders for {symbol}</h3>
           <p className="text-gray-500">No orders for this symbol yet</p>
         </div>
       );
@@ -411,9 +158,9 @@ const SingleStock = ({ period, interval }) => {
                   <td className={`px-4 py-2 whitespace-nowrap ${order.type === "buy" ? "text-green-600" : "text-red-600"}`}>
                     {order.type.toUpperCase()}
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap">{order.orderType}</td>
-                  <td className="px-4 py-2 whitespace-nowrap">{order.quantity}</td>
-                  <td className="px-4 py-2 whitespace-nowrap">
+                  <td className="px-4 py-2 text-black whitespace-nowrap">{order.orderType}</td>
+                  <td className="px-4 py-2 text-black whitespace-nowrap">{order.quantity}</td>
+                  <td className="px-4 py-2 text-black whitespace-nowrap">
                     {stockData.currency === "INR" ? "₹" : "$"}
                     {order.price.toFixed(2)}
                   </td>
@@ -426,7 +173,7 @@ const SingleStock = ({ period, interval }) => {
                       {order.status}
                     </span>
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
+                  <td className="px-4 py-2 text-black whitespace-nowrap">
                     {new Date(order.timestamp).toLocaleString()}
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap">
@@ -459,7 +206,7 @@ const SingleStock = ({ period, interval }) => {
 
     return (
       <form onSubmit={type === "buy" ? handleBuyOrder : handleSellOrder} className="p-4 bg-gray-50 rounded-lg shadow">
-        <h3 className="text-lg font-medium mb-4">{type === "buy" ? "Buy" : "Sell"} {symbol}</h3>
+        <h3 className="text-lg font-medium text-black mb-4">{type === "buy" ? "Buy" : "Sell"} {symbol}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
@@ -467,7 +214,7 @@ const SingleStock = ({ period, interval }) => {
             <select
               value={orderType}
               onChange={(e) => setOrderType(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              className="w-full px-3 py-2 text-black border rounded-md shadow-sm focus:ring focus:ring-blue-300"
             >
               <option value="market">Market</option>
               <option value="limit">Limit</option>
@@ -480,7 +227,7 @@ const SingleStock = ({ period, interval }) => {
               type="text"
               value={`${stockData.currency === "INR" ? "₹" : "$"}${stockData.current_price.toFixed(2)}`}
               readOnly
-              className="w-full px-3 py-2 border rounded-md shadow-sm bg-gray-100"
+              className="w-full px-3 py-2 border text-black rounded-md shadow-sm bg-gray-100"
             />
           </div>
         </div>
@@ -493,7 +240,7 @@ const SingleStock = ({ period, interval }) => {
               value={quantity}
               onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
               min="1"
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              className="w-full px-3 py-2 border text-black rounded-md shadow-sm focus:ring focus:ring-blue-300"
             />
           </div>
           <div className={orderType === "market" ? "hidden" : ""}>
@@ -505,7 +252,7 @@ const SingleStock = ({ period, interval }) => {
               value={price}
               onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
               step="0.01"
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              className="w-full px-3 py-2 border text-black rounded-md shadow-sm focus:ring focus:ring-blue-300"
             />
           </div>
         </div>
