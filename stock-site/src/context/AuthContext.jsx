@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-const BASE_URL = "http://192.168.1.58:8000/";
+const BASE_URL = "http://192.168.1.58:8000/api/user/";
 
 const AuthContext = createContext();
 
@@ -87,6 +87,7 @@ export const AuthProvider = ({ children }) => {
   // ✅ Logout
   const logout = () => {
     setUser(null);
+    setAuth(false)
     localStorage.removeItem("user");
   };
 

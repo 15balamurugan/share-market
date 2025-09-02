@@ -15,8 +15,8 @@ export const stockAPI = {
       const response = await api.get(`/api/stock/${symbol}`, {
         params: { period, interval },
       });
-      console.log('response', response);
-      
+      console.log("response-1", response);
+
       return response.data;
     } catch (error) {
       console.error("Error fetching stock:", error);
@@ -63,3 +63,18 @@ export const stockAPI = {
 };
 
 export default api;
+
+// export const fetchProfileData = () => {
+//   fetch(`${API_BASE_URL}/api/user/profile`, {
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("token")}`,
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       console.log(data);
+//       // setProfile(data);
+//       // setEditedProfile(data);
+//     })
+//     .catch((err) => console.error("Error fetching profile:", err));
+// };
