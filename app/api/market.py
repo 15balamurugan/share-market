@@ -70,17 +70,26 @@ async def get_categories():
 async def get_historical_data(symbol: str, period: str = "1mo", interval: str = "1d"):
     """
     Get historical market data for a symbol.
-    Parameters align with yfinance.
     """
     try:
         ticker = yf.Ticker(symbol)
         hist = ticker.history(period=period, interval=interval)
-        # Convert the DataFrame to a JSON-serializable format
-        # e.g., reset index and convert Timestamps to strings
+
+        if hist.empty:
+            raise HTTPException(status_code=404, detail="No data found for this request")
         hist.reset_index(inplace=True)
-        hist['Date'] = hist['Date'].dt.strftime('%Y-%m-%d %H:%M:%S') # Format dates
-        data = hist.to_dict(orient='records') # Convert to list of dictionaries
-        return data
+        hist.rename(columns={
+            "Date": "datetime",
+            "Open": "open",
+            "High": "high",
+            "Low": "low",
+            "Close": "close",
+            "Volume": "volume"
+        }, inplace=True)
+
+        data = hist[["datetime", "open", "high", "low", "close", "volume"]]
+        data["datetime"] = data["datetime"].dt.strftime('%Y-%m-%d %H:%M:%S')
+        return data.to_dict(orient="records")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching data: {str(e)}")
-    
+        logger.error(f"Error in get_historical_data: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
