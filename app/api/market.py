@@ -93,3 +93,4 @@ async def get_historical_data(symbol: str, period: str = "1mo", interval: str = 
     except Exception as e:
         logger.error(f"Error in get_historical_data: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+    # Add to your FastAPI backend
