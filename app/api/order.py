@@ -45,6 +45,7 @@ async def place_order(
     except Exception as e:
         current_price = random.uniform(100, 5000)  # Fallback
 
+
     # 2. Get user's virtual balance
     balance_data = await balance_collection.find_one({"user_id": user_id})
     if not balance_data:
@@ -52,9 +53,16 @@ async def place_order(
     else:
         cash_balance = balance_data["cash_balance"]
 
-    # 3. Calculate order value
-    executed_price = current_price
+        # 3. Calculate order value
+    if current_price == 0 or current_price is None:
+        # yfinance failed → execute at random price
+        executed_price = round(random.uniform(100, 5000), 2)
+    else:
+        # yfinance success → use current price
+        executed_price = current_price
+
     order_value = executed_price * order.quantity
+
 
     # 4. Generate a realistic order ID
     order_id = f"{datetime.now().strftime('%y%m%d')}{random.randint(100000, 999999)}"

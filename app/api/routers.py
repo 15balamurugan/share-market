@@ -5,6 +5,7 @@ from .broker import router as broker_router
 from .password import router as password_router
 from .watchlist import router as watchlist_router
 from .order import router as order_router   
+from .levels import router as levels_router 
 
 api_router = APIRouter()
 
@@ -14,3 +15,4 @@ api_router.include_router(broker_router)
 api_router.include_router(password_router)
 api_router.include_router(watchlist_router)
 api_router.include_router(order_router)
+api_router.include_router(levels_router)
