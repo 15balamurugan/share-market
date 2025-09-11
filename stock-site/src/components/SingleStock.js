@@ -3,7 +3,7 @@ import CandlestickChart from "./CandlestickChart";
 import { stockAPI } from "../services/api";
 
 const SingleStock = ({ period, interval }) => {
-  const [symbol, setSymbol] = useState("RELIANCE.NS");
+  const [symbol, setSymbol] = useState("TATAMOTORS.NS");
   const [stockData, setStockData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
